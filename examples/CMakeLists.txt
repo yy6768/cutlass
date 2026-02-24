@@ -174,6 +174,7 @@ foreach(EXAMPLE
   94_ada_fp8_blockwise
   111_hopper_ssd
   112_blackwell_ssd
+  conv_pool_fused
   )
 
   add_subdirectory(${EXAMPLE})

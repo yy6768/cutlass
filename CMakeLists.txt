@@ -667,6 +667,9 @@ endfunction()
 
 # Cache the flags so they are available when the function below is called anywhere globally.
 
+# Enable device-level debugging for Debug builds (required by Nsight CUDA Debugger)
+list(APPEND CUTLASS_CUDA_NVCC_FLAGS_DEBUG -G -lineinfo)
+
 set(__CUTLASS_CUDA_FLAGS ${CUTLASS_CUDA_FLAGS} CACHE INTERNAL "")
 set(__CUTLASS_CUDA_FLAGS_RELEASE ${CUTLASS_CUDA_FLAGS_RELEASE} CACHE INTERNAL "")
 set(__CUTLASS_CUDA_FLAGS_RELWITHDEBINFO ${CUTLASS_CUDA_FLAGS_RELWITHDEBINFO} CACHE INTERNAL "")

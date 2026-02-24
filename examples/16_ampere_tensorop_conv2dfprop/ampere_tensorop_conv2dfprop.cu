@@ -263,7 +263,7 @@ using SwizzleThreadBlock = cutlass::gemm::threadblock::GemmIdentityThreadblockSw
 constexpr int NumStages = 3;
 
 // Which iterator algorithm to use: Analytic or Optimized
-static cutlass::conv::IteratorAlgorithm const IteratorAlgorithm = cutlass::conv::IteratorAlgorithm::kOptimized;
+static cutlass::conv::IteratorAlgorithm const IteratorAlgorithm = cutlass::conv::IteratorAlgorithm::kAnalytic;
 
 // Is the output packed or strided
 // Use kStride if using strided output
