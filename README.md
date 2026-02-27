@@ -111,27 +111,18 @@ To get started quickly - please refer :
     + store
     + load
 
-* Advanced compiler control
-Use 'Advanced compiler control' for mixed input gemm examples for better performance.
-Advanced compiler control is an experimental feature of CUDA compiler. The controls file contains internal compiler settings tuned for specific kernels with a specific version of CUDA toolkit to get better GPU kernel code. More details and documentation on how to create these controls files will be provided in future CUDA toolkit release.
-
-Note: The advanced compiler control file is not expected to work for kernels that it was not tuned for. There is no compatibility guarantee, and the controls file will not work for CUDA toolkit with a different version.
+* Use 'Advanced control file' for mixed input gemm examples for better performance.
+  - Advanced control file is an experimental feature of CUDA compiler. The controls file contains internal compiler settings tuned for specific kernels with a specific version of CUDA toolkit to get better GPU kernel code. More details and documentation on how to create these controls files will be provided in future CUDA toolkit release.  Note: The advanced compiler control file is not expected to work for kernels that it was not tuned for. There is no compatibility guarantee, and the controls file will not work for CUDA toolkit with a different version.
 
 ## CUTLASS C++
-* Add Hopper e2m1 to fp32 optimized conversion and e2m1 * TF32 tensor core GEMM.
-    - Set MmaType to tfloat32_t for FP32 mode.
-    - TF32 provides FP32 inputs with reduced precision (19-bit vs 32-bit)
-    - Set TileShapeK=64 for TF32 (K must be multiple of 8)
-    - Shuffle optimization enabled via `compute_memory_reordering_atom<tfloat32_t>()`
-    - E2M1 -> FP32 -> TF32 TC path for mixed-precision GEMM
-    - Enable [example 55](https://github.com/NVIDIA/cutlass/tree/main/examples/55_hopper_mixed_dtype_gemm) with TF32 support
 * Add [example 93](https://github.com/NVIDIA/cutlass/tree/main/examples/93_blackwell_low_latency_gqa/) for Blackwell low latency generation phase GQA kernel.
+    - Flash Decoding with cluster reduction.
     - Kernel design details please check [Readme](https://github.com/NVIDIA/cutlass/tree/main/examples/93_blackwell_low_latency_gqa/readme.md).
-* Add [example 94](https://github.com/NVIDIA/cutlass/tree/main/examples/94_ada_fp8_blockwise/) for Ada FP8xFP8 -> BF16 GEMM with blockwise dequantization of input matrices in the MMA loop with FP32 accumulation.
-    - Generate additional device/kernel/threadblock files in CUTLASS include directory that add functionality to carry the scaling tensors + use them in MMA loop.
-    - Add gemm_blockwise to include files in [default_mma_core_sm80](https://github.com/NVIDIA/cutlass/tree/main/include/cutlass/gemm/threadblock/default_mma_core_sm80.h)
-* Add Hopper SM90 State Space Decomposition (SSD) kernel in [example 111](https://github.com/NVIDIA/cutlass/tree/main/examples/111_hopper_ssd).
 * Add Blackwell SM100 State Space Decomposition (SSD) kernel in [example 112](https://github.com/NVIDIA/cutlass/tree/main/examples/112_blackwell_ssd).
+* Add Hopper SM90 State Space Decomposition (SSD) kernel in [example 111](https://github.com/NVIDIA/cutlass/tree/main/examples/111_hopper_ssd).
+* Add Hopper e2m1 to fp32 optimized conversion and e2m1 * TF32 tensor core GEMM.
+    - Enable [example 55](https://github.com/NVIDIA/cutlass/tree/main/examples/55_hopper_mixed_dtype_gemm) with TF32 support
+* Add [example 94](https://github.com/NVIDIA/cutlass/tree/main/examples/94_ada_fp8_blockwise/) for Ada FP8xFP8 -> BF16 GEMM with blockwise dequantization of input matrices in the MMA loop with FP32 accumulation.
 * Add support for arbitrary application-provided strides for block-scale tensors.
     - Users and applications now must pass valid block-scale strides in all cases, even when the tensor is packed.
 * Support 4x blockscaled public ptx for CUDA 13.1.
@@ -151,11 +142,10 @@ Note: The advanced compiler control file is not expected to work for kernels tha
         + Apply swizzle per group based on problem shape and max swizzle size.
         + Improve examples and unit tests.
 * Fix some profiler issues:
-    - Refactor L1 functional test generation logic to reduce the L1 test cases to avoid timeout.
     - Fix a core dump issue for nvfp4 grouped GEMM kernel.
     - Fix inconsistent GEMM verification logic.
     - Rework grouped gemm verification logic for different types.
-    - Fix api break change in libheuristics.
+    - Fix api break change in using nvMatmulHeuristics.
 * Fix some failed links under `media/docs`.
 
 Note: CUTLASS 4.x builds are known to be down on Windows platforms for all CUDA toolkits.
